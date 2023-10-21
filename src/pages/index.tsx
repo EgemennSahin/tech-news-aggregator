@@ -26,9 +26,13 @@ export default function Home() {
   useEffect(() => {
     if (router.query.q) {
       setQuery(router.query.q as string);
-      handleSearch(); // automatically trigger a search based on the URL query
     }
   }, [router.query.q]);
+
+  // Automatically trigger a search based on the URL query
+  useEffect(() => {
+    handleSearch();
+  }, [query]);
 
   const handleSearch = async () => {
     const [news, questions, repos] = await Promise.all([
@@ -37,9 +41,11 @@ export default function Home() {
       fetchGitHubRepos(query),
     ]);
 
-    setArticles(news);
-    setQuestions(questions);
-    setRepos(repos);
+    if (news && questions && repos) {
+      setArticles(news);
+      setQuestions(questions);
+      setRepos(repos);
+    }
   };
 
   return (
@@ -58,6 +64,7 @@ export default function Home() {
           className="flex-grow p-2 border rounded text-black focus:border-indigo-500"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
+          onKeyUp={(e) => e.key === "Enter" && router.push(`/?q=${query}`)}
         />
         <button
           className="p-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
@@ -245,7 +252,7 @@ const Section: React.FC<SectionProps<any>> = ({
     <Pagination
       pageIndex={pageIndex}
       setPageIndex={setPageIndex}
-      itemsLength={items.length}
+      itemsLength={items?.length || 0}
     />
   </section>
 );
