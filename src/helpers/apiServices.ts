@@ -27,6 +27,7 @@ export async function fetchStackOverflowQuestions(
   return data.items.map((item: any) => ({
     title: item.title,
     link: item.link,
+    tags: item.tags,
   }));
 }
 

@@ -43,21 +43,24 @@ export default function Home() {
   };
 
   return (
-    <div className="container mx-auto p-6">
-      <Link href={"/"} className="text-4xl font-bold">
+    <div className="mx-auto p-16 bg-gray-800 w-screen min-h-screen h-full">
+      <Link
+        href={"/"}
+        className="text-4xl font-bold block mb-8 text-indigo-200"
+      >
         Tech News Aggregator
       </Link>
 
-      <div className="my-8">
+      <div className="mb-8 flex items-center space-x-4">
         <input
           type="text"
           placeholder="Search..."
-          className="p-2 border rounded text-black"
+          className="flex-grow p-2 border rounded text-black focus:border-indigo-500"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
         <button
-          className="ml-4 p-2 bg-blue-500 text-white rounded"
+          className="p-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
           onClick={() => router.push(`/?q=${query}`)}
         >
           Search
@@ -73,33 +76,34 @@ export default function Home() {
           render={(article, index) => (
             <div
               key={index}
-              className="mb-4 border p-4 rounded flex flex-col md:flex-row items-center"
+              className="mb-6 p-8 rounded-xl flex flex-col md:flex-row items-start bg-indigo-800 bg-opacity-20"
             >
               {article.urlToImage && (
-                <div className="mb-4 md:mb-0 md:mr-6">
+                <div className="mb-4 md:mb-0 md:mr-6 flex-shrink-0">
                   <img
                     src={article.urlToImage}
                     alt={article.title}
-                    className="w-56 rounded shadow-md object-cover"
+                    className="w-56 h-36 rounded shadow-md object-cover hover:shadow-lg transition-shadow duration-300"
                   />
                 </div>
               )}
-              <div>
-                <h3 className="text-2xl mb-2">
+              <div className="flex-grow">
+                <h3 className="text-2xl mb-3 font-bold">
                   <a
                     href={article.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:underline"
+                    className="text-indigo-100 hover:text-indigo-300 hover:underline transition-colors duration-300"
                   >
                     {article.title}
                   </a>
                 </h3>
-                <p>{article.description}</p>
+                <p className="text-gray-300">{article.description}</p>
               </div>
             </div>
           )}
         />
+
         <Section
           className="mt-8"
           title="Stack Overflow Questions"
@@ -107,18 +111,38 @@ export default function Home() {
           pageIndex={questionPageIndex}
           setPageIndex={setQuestionPageIndex}
           render={(question, index) => (
-            <div key={index} className="mb-4 border p-4 rounded">
-              <a
-                href={question.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:underline"
-              >
-                {question.title}
-              </a>
+            <div
+              key={index}
+              className="mb-6 p-8 rounded-xl flex flex-col md:flex-row items-start bg-indigo-800 bg-opacity-20"
+            >
+              <div className="flex-grow">
+                <h3 className="text-2xl mb-3 font-bold">
+                  <a
+                    href={question.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-indigo-100 hover:text-indigo-300 hover:underline transition-colors duration-300"
+                  >
+                    {question.title}
+                  </a>
+                </h3>
+                {question.tags && (
+                  <div className="mt-3 flex flex-wrap">
+                    {question.tags.map((tag: string, tagIndex: number) => (
+                      <span
+                        key={tagIndex}
+                        className="mr-2 mb-2 bg-indigo-600 text-indigo-100 rounded-full px-4 py-1 text-sm"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           )}
         />
+
         <Section
           className="mt-8"
           title="GitHub Repositories"
@@ -126,18 +150,23 @@ export default function Home() {
           pageIndex={repoPageIndex}
           setPageIndex={setRepoPageIndex}
           render={(repo, index) => (
-            <div key={index} className="mb-4 border p-4 rounded">
-              <h3 className="text-2xl mb-2">
-                <a
-                  href={repo.html_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:underline"
-                >
-                  {repo.name}
-                </a>
-              </h3>
-              <p>{repo.description}</p>
+            <div
+              key={index}
+              className="mb-6 p-8 rounded-xl flex flex-col md:flex-row items-start bg-indigo-800 bg-opacity-20"
+            >
+              <div className="flex-grow">
+                <h3 className="text-2xl mb-3 font-bold">
+                  <a
+                    href={repo.html_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-indigo-100 hover:text-indigo-300 hover:underline transition-colors duration-300"
+                  >
+                    {repo.name}
+                  </a>
+                </h3>
+                <p className="text-gray-300">{repo.description}</p>
+              </div>
             </div>
           )}
         />
@@ -157,24 +186,26 @@ const Pagination: React.FC<PaginationProps> = ({
   setPageIndex,
   itemsLength,
 }) => (
-  <>
-    {pageIndex > 0 && (
+  <div className="mt-4 flex justify-between">
+    {pageIndex > 0 ? (
       <button
         onClick={() => setPageIndex(pageIndex - 1)}
-        className="mt-2 bg-blue-500 text-white rounded p-2 mr-2"
+        className="bg-indigo-600 text-white rounded p-2 hover:bg-indigo-700"
       >
         Previous Page
       </button>
+    ) : (
+      <div />
     )}
     {itemsLength > (pageIndex + 1) * PAGE_SIZE && (
       <button
         onClick={() => setPageIndex(pageIndex + 1)}
-        className="mt-2 bg-blue-500 text-white rounded p-2"
+        className="bg-indigo-600 text-white rounded p-2 hover:bg-indigo-700"
       >
         Next Page
       </button>
     )}
-  </>
+  </div>
 );
 
 type ListProps<T> = {
@@ -208,8 +239,8 @@ const Section: React.FC<SectionProps<any>> = ({
   setPageIndex,
   render,
 }) => (
-  <section className={className}>
-    <h2 className="text-3xl font-semibold mb-4">{title}</h2>
+  <section className={`p-4 rounded ${className}`}>
+    <h2 className="text-3xl font-semibold mb-6 text-indigo-500">{title}</h2>
     <List items={items} pageIndex={pageIndex} render={render} />
     <Pagination
       pageIndex={pageIndex}
