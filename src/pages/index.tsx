@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   fetchTechNews,
   fetchStackOverflowQuestions,
   fetchGitHubRepos,
 } from "@/helpers/apiServices";
 import { Article, Question, Repository } from "@/types/data";
-import { useRouter } from "next/router";
 import Link from "next/link";
 
 const PAGE_SIZE = 5;
@@ -20,20 +19,6 @@ export default function Home() {
   const [questionPageIndex, setQuestionPageIndex] = useState<number>(0);
   const [repoPageIndex, setRepoPageIndex] = useState<number>(0);
 
-  const router = useRouter();
-
-  // Set query from URL when component is mounted
-  useEffect(() => {
-    if (router.query.q) {
-      setQuery(router.query.q as string);
-    }
-  }, [router.query.q]);
-
-  // Automatically trigger a search based on the URL query
-  useEffect(() => {
-    handleSearch();
-  }, [query]);
-
   const handleSearch = async () => {
     const [news, questions, repos] = await Promise.all([
       fetchTechNews(query),
@@ -41,9 +26,13 @@ export default function Home() {
       fetchGitHubRepos(query),
     ]);
 
-    if (news && questions && repos) {
+    if (news) {
       setArticles(news);
+    }
+    if (questions) {
       setQuestions(questions);
+    }
+    if (repos) {
       setRepos(repos);
     }
   };
@@ -64,11 +53,17 @@ export default function Home() {
           className="flex-grow p-2 border rounded text-black focus:border-indigo-500"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          onKeyUp={(e) => e.key === "Enter" && router.push(`/?q=${query}`)}
+          onKeyUp={(e) => {
+            if (e.key === "Enter") {
+              handleSearch();
+            }
+          }}
         />
         <button
           className="p-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
-          onClick={() => router.push(`/?q=${query}`)}
+          onClick={() => {
+            handleSearch();
+          }}
         >
           Search
         </button>
