@@ -2,7 +2,7 @@
 
 import { Article, Question, Repository } from "@/types/data";
 
-const NEWS_API_URL = "https://newsapi.org/v2/everything";
+const NEWS_API_URL = "https://newsdata.io/api/1/news";
 const SO_API_URL = "https://api.stackexchange.com/2.3/search";
 const GITHUB_API_URL = "https://api.github.com/search/repositories";
 
@@ -10,10 +10,10 @@ const NEWS_API_KEY = process.env.NEXT_PUBLIC_NEWS_API_KEY;
 
 export async function fetchTechNews(query: string): Promise<Article[]> {
   const response = await fetch(
-    `${NEWS_API_URL}?language=en&q=${query}&apiKey=${NEWS_API_KEY}`
+    `${NEWS_API_URL}?apikey=${NEWS_API_KEY}&qInTitle=${query}&language=en`
   );
   const data = await response.json();
-  return data.articles;
+  return data.results;
 }
 
 export async function fetchStackOverflowQuestions(
