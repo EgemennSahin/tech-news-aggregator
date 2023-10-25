@@ -80,10 +80,10 @@ export default function Home() {
               key={index}
               className="mb-6 p-8 rounded-xl flex flex-col md:flex-row items-start bg-indigo-800 bg-opacity-20"
             >
-              {article.urlToImage && (
+              {article.image_url && (
                 <div className="mb-4 md:mb-0 md:mr-6 flex-shrink-0">
                   <img
-                    src={article.urlToImage}
+                    src={article.image_url}
                     alt={article.title}
                     className="w-56 h-36 rounded shadow-md object-cover hover:shadow-lg transition-shadow duration-300"
                   />
@@ -92,7 +92,7 @@ export default function Home() {
               <div className="flex-grow">
                 <h3 className="text-2xl mb-3 font-bold">
                   <a
-                    href={article.url}
+                    href={article.link}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-indigo-100 hover:text-indigo-300 hover:underline transition-colors duration-300"
