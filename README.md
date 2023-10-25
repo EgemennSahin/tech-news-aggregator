@@ -1,6 +1,6 @@
 # Tech News Aggregator
 
-Tech News Aggregator is a web application built with Next.js and TypeScript, that aggregates technology-related news, Stack Overflow questions, and GitHub repositories based on a user's search query. The application fetches data from various APIs and displays it in a paginated format. The deployed version is [here](https://tech-news-aggregator.vercel.app/).
+Tech News Aggregator is a web application built with Next.js and TypeScript, that aggregates technology-related news, Stack Overflow questions, and GitHub repositories based on a user's search query. The application fetches data from various APIs and displays it in a paginated format. The UI changes into a different seasonal theme every time a search is queried. The deployed version is [here](https://tech-news-aggregator.vercel.app/).
 
 ## Features
 
@@ -9,6 +9,7 @@ Tech News Aggregator is a web application built with Next.js and TypeScript, tha
 - Fetch and display GitHub repositories based on a query.
 - Paginated viewing for all sections.
 - Responsive layout that adjusts to different screen sizes.
+- Dynamic UI theme that adjusts based on the current season.
 
 ## Getting Started
 
